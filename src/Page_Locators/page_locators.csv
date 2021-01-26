@@ -1,0 +1,5 @@
+element_name,xpath
+women_button,(//*[@class="c-super-promo-header__ctas"]/a[text()="Women"])[1]
+men_button,(//*[@class="c-super-promo-header__ctas"]/a[text()="Men"])[1]
+handbag_button,(//*[@class="c-super-promo-header__ctas"]/a[text()="Handbags"])[1]
+filter_button,"//button//span[text()='Filter']
