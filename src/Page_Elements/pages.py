@@ -12,6 +12,7 @@ from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.common.action_chains import ActionChains
 
 
+
 class Pages:
     def __init__(self, driver):
         self.driver = driver
@@ -39,6 +40,38 @@ class Pages:
 
     def get_Filter_element(self, filter_xpath):
         wait = WebDriverWait(self.driver, 10)
+     #   print("Clicking on Filter button")
         web_element = wait.until(EC.presence_of_element_located((By.XPATH, filter_xpath)))
         return web_element
+
+    def click_On_Filter_button(self, filter_xpath):
+        wait = WebDriverWait(self.driver, 10)
+        print("Clicking on filter button", filter_xpath)
+        try:
+            button_element = wait.until(EC.element_to_be_clickable((By.XPATH, filter_xpath)))
+            ActionChains(self.driver).click(button_element).perform()
+        except TimeoutException:
+            print("Loading took too much time!")
+
+    def click_list_option_button(self, driver, item_xpath):
+        wait = WebDriverWait(driver, 10)
+        print("Clicking on %s" % item_xpath)
+        try:
+            list_option_element = wait.until(EC.element_to_be_clickable((By.XPATH, item_xpath)))
+            driver.implicitly_wait(10)
+            driver.execute_script("arguments[0].click()", list_option_element)
+        except TimeoutException:
+            print("Loading took too much time!")
+
+    def check_or_uncheck_box(self, driver, item_xpath):
+        print("Clicking on %s" % item_xpath)
+        checkbox = driver.find_element(By.XPATH, item_xpath)
+        self.scroll_element_into_view(driver, checkbox)
+
+    def scroll_element_into_view(self, driver, element):
+        """Scroll element into view"""
+        y = element.location['y']
+        driver.execute_script('window.scrollTo(0, {0})'.format(y))
+        driver.implicitly_wait(10)
+        driver.execute_script("arguments[0].click()", element)
 

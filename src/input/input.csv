@@ -1,4 +1,2 @@
-01/01/2016,4
-02/01/2016,2
-03/01/2016,10
-04/01/2016,8
+"testcase_id","gender","category","size","color","price","heel_height","expected_output"
+"tc1","women","Flats",5,,,,2
