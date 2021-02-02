@@ -48,7 +48,7 @@ def test_open_url():
     elif data[0]['gender'].lower() == "handbags":
         page.click_action_button(locator_dict.get('handbag_button'))
         time.sleep(2)
-
+    driver.set_page_load_timeout(5)
     filter_text = page.get_Filter_element(locator_dict.get('filter_button')).text
     assert filter_text == "Filter"
 
@@ -57,13 +57,15 @@ def test_open_url():
     filter_data = data[0]
     filter_list = ["Category", "size", "color", "price", "heel_height"]
     filter_dict = {}
-    LIST_ITEM_FILTERS = ['Size', 'Colour']
-    INPUT_ITEM_FILTERS = ['Category', 'Price', 'Heel-Height']
+    LIST_ITEM_FILTERS = ['size', 'colour']
+    INPUT_ITEM_FILTERS = ['category', 'price', 'heel-height']
     for fv in filter_list:
-        if fv in INPUT_ITEM_FILTERS:
-            page.check_or_uncheck_box(locator_dict.get('input_check_list') % (fv.lower(), filter_data[fv].lower()))
-        else:
-            page.click_list_option_button(locator_dict.get('filter_option_list') % (filter_data[fv].lower()))
+        fv = fv.lower()
+        if filter_data[fv]:
+            if fv in INPUT_ITEM_FILTERS:
+                page.check_or_uncheck_box(locator_dict.get('input_check_list') % (fv, filter_data[fv].lower()))
+            else:
+                page.click_list_option_button(locator_dict.get('filter_option_list') % (filter_data[fv].lower()))
 
 
 
@@ -71,7 +73,10 @@ def test_open_url():
 
     time.sleep(2)
 
-    filter_element = page.get_Filter_element(locator_dict.get('filter_option_list') % data[0]['color'])
-    filter_element.click()
+    apply_filter_element = page.get_Filter_element(locator_dict.get('ApplyFilterTextButton')).text
+    page.click_On_Filter_button(locator_dict.get('ApplyFilterTextButton'))
+    assert apply_filter_element == "Apply 2 filters"
+    # apply_filter_element.click()
     driver.close()
+    driver.quit()
 
