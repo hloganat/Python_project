@@ -1,2 +1,2 @@
-"testcase_id","gender","category","size","color","price","heel_height","expected_output"
-"tc1","women","Flats",5,,,,2
+"testcase_id","click_type","submenu_type","gender","category","size","color","price","heel_height","expected_output"
+"tc1","menu","footwear","women","Flats",5,,,,2
