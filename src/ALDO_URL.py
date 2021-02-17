@@ -38,18 +38,23 @@ def test_open_url():
     data = csv_to_dict(input_file)
     print(data)
 
-    if data[0]['gender'].lower() == 'women':
-        # click on the category button
-        page.click_action_button(locator_dict.get('women_button'))
-        time.sleep(2)
-    elif data[0]['gender'].lower() == 'men':
-        page.click_action_button(locator_dict.get('men_button'))
-        time.sleep(2)
-    elif data[0]['gender'].lower() == "handbags":
-        page.click_action_button(locator_dict.get('handbag_button'))
-        time.sleep(2)
+    if data[0]['click_type'].lower() == 'button':
+        if data[0]['gender'].lower() == 'women':
+            # click on the category button
+            page.click_action_button(locator_dict.get('women_button'))
+            time.sleep(2)
+        elif data[0]['gender'].lower() == 'men':
+            page.click_action_button(locator_dict.get('men_button'))
+            time.sleep(2)
+        elif data[0]['gender'].lower() == "handbags":
+            page.click_action_button(locator_dict.get('handbag_button'))
+            time.sleep(2)
+    else:
+         page.hover_on_menu_element((locator_dict.get('menu_xpath') % data[0]['gender'].capitalize()))
+         page.click_action_button(locator_dict.get('submenu_xpath') % data[0]['submenu_type'].capitalize())
     driver.set_page_load_timeout(5)
-    filter_text = page.get_Filter_element(locator_dict.get('filter_button')).text
+    time.sleep(2)
+    filter_text = page.get_element(locator_dict.get('filter_button')).text
     assert filter_text == "Filter"
 
     page.click_On_Filter_button(locator_dict.get('filter_button'))
@@ -66,17 +71,15 @@ def test_open_url():
                 page.check_or_uncheck_box(locator_dict.get('input_check_list') % (fv, filter_data[fv].lower()))
             else:
                 page.click_list_option_button(locator_dict.get('filter_option_list') % (filter_data[fv].lower()))
-
-
-
-
-
     time.sleep(2)
 
-    apply_filter_element = page.get_Filter_element(locator_dict.get('ApplyFilterTextButton')).text
-    page.click_On_Filter_button(locator_dict.get('ApplyFilterTextButton'))
+    apply_filter_element = page.get_element(locator_dict.get('ApplyFilterTextButton')).text
     assert apply_filter_element == "Apply 2 filters"
-    # apply_filter_element.click()
-    driver.close()
-    driver.quit()
+    page.click_On_Filter_button(locator_dict.get('ApplyFilterTextButton'))
+    image_elements = page.get_child_elements(locator_dict.get('productImageList'))
+    page.click_on_child_element(image_elements, 0)
+    page.click_On_Filter_button(locator_dict.get('addToBag'))
+    time.sleep(5)
+    # driver.close()
+    # driver.quit()
 

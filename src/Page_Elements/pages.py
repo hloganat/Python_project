@@ -38,16 +38,36 @@ class Pages:
         except TimeoutException:
             print("Loading took too much time!")
 
-    def get_Filter_element(self, filter_xpath):
+    def get_element(self, xpath):
         try:
             wait = WebDriverWait(self.driver, 30)
             timeout: int = 30
             #   print("Clicking on Filter button")
-            web_element = wait.until(EC.presence_of_element_located((By.XPATH, filter_xpath)))
+            web_element = wait.until(EC.presence_of_element_located((By.XPATH, xpath)))
             return web_element
         except TimeoutException as err:
             print("Timed out waiting for Filter button")
             # webdriver.close()
+
+    def get_child_elements(self, xpath):
+        try:
+            wait = WebDriverWait(self.driver, 30)
+            timeout: int = 30
+            #   print("Clicking on Filter button")
+            web_elements = wait.until(EC.presence_of_all_elements_located((By.XPATH, xpath)))
+            return web_elements
+        except TimeoutException as err:
+            print("Timed out waiting for Filter button")
+            # webdriver.close()
+
+    def click_on_child_element(self, web_elements, i):
+        ActionChains(self.driver).click(web_elements[i]).perform()
+
+    def hover_on_menu_element(self, menu_xpath):
+        wait = WebDriverWait(self.driver, 10)
+        # print("menu xpath : %s" % self.get_menu_xpath(menu))
+        menu_hover_element = wait.until(EC.element_to_be_clickable((By.XPATH, menu_xpath)))
+        ActionChains(self.driver).move_to_element(menu_hover_element).perform()
 
     def click_On_Filter_button(self, filter_xpath):
         wait = WebDriverWait(self.driver, 10)
@@ -79,3 +99,5 @@ class Pages:
         driver.execute_script('window.scrollTo(0, {0})'.format(y))
         driver.implicitly_wait(10)
         driver.execute_script("arguments[0].click()", element)
+
+# women_button,(//*[@class="c-super-promo-header__ctas"]/a[text()="Women"])[0]
